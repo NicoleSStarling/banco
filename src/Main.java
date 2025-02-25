@@ -46,7 +46,7 @@ public class Main {
     }
 }  */
 
-package model;
+/* package model;
 
 public class Main {
     public static void main(String[] args) {
@@ -98,6 +98,61 @@ public class Main {
             System.out.println("❌ Erro esperado: " + e.getMessage());
         }
     }
+}*/
+
+package model;
+
+import dao.CartaoDAO;
+
+import java.util.List;
+
+public class Main {
+    public static void main(String[] args) {
+        CartaoDAO cartaoDAO = new CartaoDAO(); // Instancia o DAO para acessar o banco
+
+        // 📌 TESTE 1: Inserir um novo cartão no banco
+        CartaoModel novoCartao = new CartaoModel(
+                0, // O banco gera o ID automaticamente
+                "1234567812345678", // Número do cartão válido
+                "Pedro Silva", // Nome do titular
+                "12/2026", // Data de expiração futura
+                123, // CVV válido
+                5000.00, // Limite total
+                1000.00 // Saldo já utilizado
+        );
+
+        boolean insercaoSucesso = cartaoDAO.inserirCartao(novoCartao);
+        System.out.println("✅ Cartão inserido com sucesso? " + insercaoSucesso);
+
+        // 📌 TESTE 2: Listar todos os cartões cadastrados
+        List<CartaoModel> cartoes = cartaoDAO.listarTodos();
+        System.out.println("\n📋 Lista de Cartões no Banco:");
+        for (CartaoModel cartao : cartoes) {
+            System.out.println(cartao);
+        }
+
+        // 📌 TESTE 3: Buscar um cartão específico pelo ID
+        if (!cartoes.isEmpty()) {
+            int idParaBuscar = cartoes.get(0).getId(); // Pega o ID do primeiro cartão inserido
+            CartaoModel cartaoBuscado = cartaoDAO.buscarPorId(idParaBuscar);
+            System.out.println("\n🔍 Cartão encontrado por ID: " + cartaoBuscado);
+        }
+
+        // 📌 TESTE 4: Atualizar os dados do cartão
+        if (!cartoes.isEmpty()) {
+            CartaoModel cartaoParaAtualizar = cartoes.get(0);
+            cartaoParaAtualizar.setSaldoUtilizado(2000.00); // Atualiza o saldo utilizado
+            cartaoParaAtualizar.setNomeTitular("Pedro Oliveira"); // Muda o nome do titular
+
+            boolean atualizacaoSucesso = cartaoDAO.atualizarCartao(cartaoParaAtualizar);
+            System.out.println("\n✏️ Cartão atualizado com sucesso? " + atualizacaoSucesso);
+        }
+
+        // 📌 TESTE 5: Deletar um cartão do banco
+        if (!cartoes.isEmpty()) {
+            int idParaDeletar = cartoes.get(0).getId(); // Pega o ID do primeiro cartão
+            boolean deletado = cartaoDAO.deletarCartao(idParaDeletar);
+            System.out.println("\n🗑️ Cartão deletado com sucesso? " + deletado);
+        }
+    }
 }
-
-

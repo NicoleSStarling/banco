@@ -152,7 +152,8 @@ public class CartaoModel {
 
     // Getter para o número do cartão (retorna o número mascarado por segurança)
     public String getNumero() {
-        return "**** **** **** " + numero.substring(numero.length() - 4);
+       // return "**** **** **** " + numero.substring(numero.length() - 4);
+        return numero;
     }
 
     // Setter para definir o número do cartão com validação
@@ -162,6 +163,8 @@ public class CartaoModel {
         } else {
             throw new IllegalArgumentException("Número do cartão inválido! Deve conter exatamente 16 dígitos numéricos.");
         }
+
+        this.numero = numero;
     }
 
     public String getNomeTitular() {
@@ -200,7 +203,8 @@ public class CartaoModel {
         if (cvv >= 100 && cvv <= 9999) {
             this.cvv = cvv;
         } else {
-            throw new IllegalArgumentException("CVV inválido! Deve conter 3 ou 4 dígitos.");
+            System.out.println("⚠️ CVV inválido encontrado no banco: " + cvv);
+            this.cvv = 0; // Define um valor padrão para evitar erro
         }
     }
 
